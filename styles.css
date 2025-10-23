@@ -1,0 +1,88 @@
+/* General Application Styling */
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: #f5f7fa;
+}
+
+/* TableView Cell Styling */
+.table-view .table-cell {
+    -fx-text-fill: #000000; /* Set text color to black */
+    -fx-font-size: 13px;
+    -fx-padding: 8px 10px;
+}
+
+/* TableView Header Styling */
+.table-view .column-header .label {
+    -fx-text-fill: #000000; /* Set header text color to black */
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+/* TableView Row Styling */
+.table-row-cell {
+    -fx-background-color: #ffffff; /* Set row background to white */
+}
+
+/* Alternate Row Styling for Better Readability */
+.table-row-cell:odd {
+    -fx-background-color: #f9f9f9; /* Light gray for alternate rows */
+}
+
+/* Selected Row Styling */
+.table-row-cell:selected {
+    -fx-background-color: #cce5ff; /* Light blue for selected row */
+    -fx-text-fill: #000000; /* Ensure text remains black when selected */
+}
+
+
+/* ComboBox Styling */
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dcdcdc;
+    -fx-border-radius: 4;
+    -fx-padding: 4 8 4 8;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #333333;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #e0f2f1;
+}
+
+/* Button Styling */
+.button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-padding: 6 12 6 12;
+}
+
+.button:hover {
+    -fx-background-color: #45a049;
+}
+
+.button:pressed {
+    -fx-background-color: #388e3c;
+}
+
+/* Labeel Styling */
+.label {
+    -fx-text-fill: #333333;
+}
+
+/* FlowPane Styling */
+.flow-pane .label {
+    -fx-background-color: #e0e0e0;
+    -fx-border-color: #bdbdbd;
+    -fx-border-radius: 4;
+    -fx-padding: 4 8 4 8;
+    -fx-cursor: hand;
+}
+
+.flow-pane .label:hover {
+    -fx-background-color: #d5d5d5;
+}
