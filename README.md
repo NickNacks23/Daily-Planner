@@ -20,6 +20,7 @@ This is a desktop application that is built with JavaFX that helps its user mana
 
 # Preview:
 <img width="900" height="630" alt="Screenshot 2025-10-27 at 12 45 47 AM" src="https://github.com/user-attachments/assets/0c1cdcb6-cb05-4f9b-8622-5fc9f5fcbe82" />
+
 Watch a video of how my Daily Planner works: https://youtu.be/mUpe5c7Boew
 
 # Goal
