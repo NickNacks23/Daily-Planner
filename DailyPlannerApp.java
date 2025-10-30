@@ -11,43 +11,37 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
 
 
+
+
 public class DailyPlannerApp extends Application {
    private final ObservableList<Task> allTasks = FXCollections.observableArrayList();
    private final ObservableList<String> categories = FXCollections.observableArrayList("Work", "Personal", "Errands");
-
-
    private TableView<Task> taskTable;
    private ComboBox<String> categoryFilter;
    private FlowPane taskChips;
-
-
    private YearMonth currentYearMonth = YearMonth.now();
    private LocalDate currentDate = LocalDate.now();
    private GridPane monthGrid;
    private Label monthLabel;
    private TextArea agendaArea;
-
-
    private TabPane tabs;
    private VBox calendarViewContainer;
-
 
    private enum CalendarViewMode { DAY, WEEK, MONTH }
    private CalendarViewMode currentViewMode = CalendarViewMode.MONTH;
 
 
+
+
+   
    public static void main(String[] args) {
        launch(args);
    }
-
-
    @Override
    public void start(Stage primaryStage) {
        tabs = new TabPane();
@@ -55,17 +49,13 @@ public class DailyPlannerApp extends Application {
        Tab newTaskTab = new Tab("New Task", createNewTaskForm());
        Tab calendarTab = new Tab("Calendar", createCalendarView());
 
-
        tabs.getTabs().addAll(dashboardTab, newTaskTab, calendarTab);
        tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-
-
        Scene scene = new Scene(tabs, 900, 600);
        primaryStage.setTitle("Daily Planner / To-Do List");
        primaryStage.setScene(scene);
        primaryStage.show();
        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
-
    }
 
 
@@ -73,19 +63,13 @@ public class DailyPlannerApp extends Application {
        Label header = new Label("Today: " + LocalDate.now());
        header.setFont(Font.font("Arial", 20));
 
-
        Button addButton = new Button("Add New Task +");
        addButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-       addButton.setOnAction(e -> tabs.getSelectionModel().select(1));
-
-       
-
+       addButton.setOnAction(e -> tabs.getSelectionModel().select(1));  
        categoryFilter = new ComboBox<>();
        updateCategoryFilterItems();
        categoryFilter.setValue("All");
        categoryFilter.setOnAction(e -> refreshTaskTable());
-
-
        Button addCatBtn = new Button("Add Category");
        addCatBtn.setOnAction(e -> {
            TextInputDialog dialog = new TextInputDialog();
@@ -100,7 +84,6 @@ public class DailyPlannerApp extends Application {
                }
            });
        });
-
 
        Button delCatBtn = new Button("Delete Category");
        delCatBtn.setOnAction(e -> {
@@ -118,21 +101,14 @@ public class DailyPlannerApp extends Application {
            });
        });
 
-
        HBox catControls = new HBox(5, addCatBtn, delCatBtn);
        catControls.setAlignment(Pos.CENTER_LEFT);
-
-
        HBox topBar = new HBox(10, header, addButton, new Label("Category:"), categoryFilter, catControls);
        topBar.setPadding(new Insets(10));
        topBar.setAlignment(Pos.CENTER_LEFT);
-
-
        taskChips = new FlowPane(8, 8);
        updateChips(taskChips);
        taskChips.setPadding(new Insets(0, 10, 10, 10));
-
-
        taskTable = new TableView<>();
        taskTable.setPlaceholder(new Label("No tasks yet — click 'Add New Task +'"));
        
@@ -154,7 +130,7 @@ public class DailyPlannerApp extends Application {
        });
        doneCol.setEditable(true);
        
-       //For eeach task, wehn a user clicks on the done box, there will be a mark
+       //For eeach task, when a user clicks on the done box, there will be a mark
        TableColumn<Task, String> nameCol = new TableColumn<>("Task");
        nameCol.setCellValueFactory(param -> param.getValue().nameProperty());
        nameCol.setCellFactory(column -> new TableCell<>() {
@@ -179,38 +155,27 @@ public class DailyPlannerApp extends Application {
        TableColumn<Task, String> dateCol = new TableColumn<>("Due Date");
 dateCol.setCellValueFactory(param -> param.getValue().dateProperty());
 dateCol.setPrefWidth(130);  //width for dates of tasks
-
-       
        TableColumn<Task, String> prioCol = new TableColumn<>("Priority");
        prioCol.setCellValueFactory(param -> param.getValue().priorityProperty());
-       
        TableColumn<Task, String> statusCol = new TableColumn<>("Status");
        statusCol.setCellValueFactory(param -> param.getValue().statusProperty());
-       
        taskTable.getColumns().addAll(doneCol, nameCol, dateCol, prioCol, statusCol);
        taskTable.setItems(allTasks);
        taskTable.setEditable(true);
-       
-
 
        VBox dashboard = new VBox(10, topBar, taskChips, taskTable);
        dashboard.setPadding(new Insets(10));
        VBox.setVgrow(taskTable, Priority.ALWAYS);
        return dashboard;
    }
-
-
    private VBox createNewTaskForm() {
        GridPane form = new GridPane();
        form.setHgap(10); form.setVgap(12); form.setPadding(new Insets(20));
-
 
        TextField titleField = new TextField();
        TextArea descArea = new TextArea();
        DatePicker datePicker = new DatePicker(LocalDate.now());
        TextField timeField = new TextField("14:00");
-
-
        ToggleGroup prioGroup = new ToggleGroup();
        RadioButton highRB = new RadioButton("High");
        RadioButton medRB = new RadioButton("Medium");
@@ -220,19 +185,12 @@ dateCol.setPrefWidth(130);  //width for dates of tasks
        lowRB.setToggleGroup(prioGroup);
        medRB.setSelected(true);
 
-
        ComboBox<String> catBox = new ComboBox<>(categories);
        catBox.setEditable(true);
        catBox.setValue(categories.get(0));
-
-
        TextField tagsField = new TextField();
-
-
        Button cancelBtn = new Button("Cancel");
        cancelBtn.setOnAction(e -> tabs.getSelectionModel().select(0));
-
-
        Button saveBtn = new Button("Save Task ✔");
        saveBtn.setOnAction(e -> {
            String name = titleField.getText();
@@ -252,7 +210,6 @@ dateCol.setPrefWidth(130);  //width for dates of tasks
            tabs.getSelectionModel().select(0);
        });
 
-
        form.add(new Label("Title:"),0,0); form.add(titleField,1,0);
        form.add(new Label("Description:"),0,1); form.add(descArea,1,1);
        form.add(new Label("Due Date:"),0,2); form.add(datePicker,1,2);
@@ -260,12 +217,9 @@ dateCol.setPrefWidth(130);  //width for dates of tasks
        form.add(new Label("Priority:"),0,4); form.add(new HBox(10,highRB,medRB,lowRB),1,4);
        form.add(new Label("Category:"),0,5); form.add(catBox,1,5);
        form.add(new HBox(10,cancelBtn,saveBtn),1,7);
-
-
        return new VBox(form);
    }
-
-
+   
    private VBox createCalendarView() {
        Button prevYear = new Button("«");
        Button prevMonth = new Button("‹");
@@ -281,18 +235,13 @@ dateCol.setPrefWidth(130);  //width for dates of tasks
        nextYear.setOnAction(e -> { currentYearMonth = currentYearMonth.plusYears(1); updateCalendarView(); });
        prevMonth.setOnAction(e -> { currentYearMonth = currentYearMonth.minusMonths(1); updateCalendarView(); });
        nextMonth.setOnAction(e -> { currentYearMonth = currentYearMonth.plusMonths(1); updateCalendarView(); });
-
-
        monthGrid = new GridPane();
        monthGrid.setHgap(5);
        monthGrid.setVgap(5);
        monthGrid.setPadding(new Insets(10));
-
-
        agendaArea = new TextArea();
        agendaArea.setEditable(false);
        agendaArea.setPrefHeight(120);
-
 
        ToggleGroup viewToggle = new ToggleGroup();
        RadioButton dayView = new RadioButton("Day View");
@@ -302,8 +251,6 @@ dateCol.setPrefWidth(130);  //width for dates of tasks
        weekView.setToggleGroup(viewToggle);
        monthView.setToggleGroup(viewToggle);
        monthView.setSelected(true);
-
-
        viewToggle.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
            if (newVal != null) {
                String selected = ((RadioButton) newVal).getText();
@@ -314,24 +261,16 @@ dateCol.setPrefWidth(130);  //width for dates of tasks
            }
        });
 
-
        HBox viewBox = new HBox(10, dayView, weekView, monthView);
        viewBox.setAlignment(Pos.CENTER);
        viewBox.setPadding(new Insets(10));
-
-
        calendarViewContainer = new VBox();
-
-
        VBox calendar = new VBox(10, nav, viewBox, calendarViewContainer, new Label("Agenda:"), agendaArea);
        calendar.setPadding(new Insets(10));
        VBox.setVgrow(calendarViewContainer, Priority.ALWAYS);
-
-
        updateCalendarView();
        return calendar;
    }
-
 
    private void updateCalendarView() {
        calendarViewContainer.getChildren().clear();
@@ -342,7 +281,6 @@ dateCol.setPrefWidth(130);  //width for dates of tasks
        }
        updateAgenda(currentDate);
    }
-
 
    private void buildDayView(LocalDate date) {
        VBox dayBox = new VBox(5);
@@ -360,7 +298,6 @@ dateCol.setPrefWidth(130);  //width for dates of tasks
        }
        calendarViewContainer.getChildren().add(dayBox);
    }
-
 
    private void buildWeekView(LocalDate baseDate) {
        VBox weekBox = new VBox(10);
@@ -381,11 +318,9 @@ dateCol.setPrefWidth(130);  //width for dates of tasks
        calendarViewContainer.getChildren().add(weekBox);
    }
 
-
    private void buildMonthGrid() {
        monthGrid.getChildren().clear();
        monthLabel.setText(currentYearMonth.getMonth() + " " + currentYearMonth.getYear());
-
 
        String[] days = {"Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"};
        for (int i = 0; i < days.length; i++) {
@@ -394,13 +329,10 @@ dateCol.setPrefWidth(130);  //width for dates of tasks
            monthGrid.add(day, i, 0);
        }
 
-
        LocalDate firstDay = currentYearMonth.atDay(1);
        int col = firstDay.getDayOfWeek().getValue() % 7;
        int row = 1;
        int daysInMonth = currentYearMonth.lengthOfMonth();
-
-
        for (int d = 1; d <= daysInMonth; d++) {
            VBox cell = new VBox();
            cell.setPadding(new Insets(4));
@@ -422,7 +354,6 @@ dateCol.setPrefWidth(130);  //width for dates of tasks
        calendarViewContainer.getChildren().add(monthGrid);
    }
 
-
    private void updateAgenda(LocalDate date) {
        StringBuilder sb = new StringBuilder("Tasks on " + date + ":\n");
        allTasks.stream()
@@ -430,16 +361,12 @@ dateCol.setPrefWidth(130);  //width for dates of tasks
                .forEach(t -> sb.append("- ").append(t.getName()).append("\n"));
        agendaArea.setText(sb.toString());
    }
-
-
    private void updateCategoryFilterItems() {
        if (categoryFilter != null) {
            categoryFilter.getItems().setAll("All");
            categoryFilter.getItems().addAll(categories);
        }
    }
-
-
    private void updateChips(FlowPane chips) {
        chips.getChildren().clear();
        chips.getChildren().add(createChip("All"));
@@ -447,21 +374,15 @@ dateCol.setPrefWidth(130);  //width for dates of tasks
            chips.getChildren().add(createChip(cat));
        }
    }
-
-
    private Label createChip(String label) {
        Label chip = new Label(label);
        chip.setStyle("-fx-border-color: gray; -fx-border-radius: 4; -fx-padding: 4 8; -fx-cursor: hand;");
        chip.setOnMouseClicked(e -> categoryFilter.setValue(label));
        return chip;
    }
-
-
    private void refreshTaskTable() {
        taskTable.refresh();
    }
-
-
    private void clearForm(TextField title, TextArea desc, DatePicker date, TextField time,
                           ToggleGroup prio, ComboBox<String> cat, TextField tags) {
        title.clear(); desc.clear(); date.setValue(LocalDate.now());
@@ -469,10 +390,6 @@ dateCol.setPrefWidth(130);  //width for dates of tasks
        cat.setValue("Work");
       tags.clear();
   }
-
-
-
-
   private Label createChip(String label) {
       Label chip = new Label(label);
       chip.setStyle("-fx-border-color: gray; -fx-border-radius: 4; -fx-padding: 4 8; -fx-cursor: hand;");
@@ -480,18 +397,12 @@ dateCol.setPrefWidth(130);  //width for dates of tasks
       return chip;
   }
 
-
-
-
   public static class Task {
       private final SimpleStringProperty name;
       private final SimpleStringProperty date;
       private final SimpleStringProperty priority;
       private final SimpleStringProperty status;
       private final SimpleBooleanProperty done;
-
-
-
 
       public Task(String name, String date, String priority, String status) {
           this.name = new SimpleStringProperty(name);
@@ -501,37 +412,16 @@ dateCol.setPrefWidth(130);  //width for dates of tasks
           this.done = new SimpleBooleanProperty(false);
       }
 
-
-
-
       public StringProperty nameProperty() { return name; }
       public String getName() { return name.get(); }
-
-
-
-
       public StringProperty dateProperty() { return date; }
       public String getDate() { return date.get(); }
-
-
-
-
       public StringProperty priorityProperty() { return priority; }
       public String getPriority() { return priority.get(); }
-
-
-
-
       public StringProperty statusProperty() { return status; }
       public String getStatus() { return status.get(); }
-
-
-
-
       public BooleanProperty doneProperty() { return done; }
   }
 }
-
-
 
 
